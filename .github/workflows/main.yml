@@ -23,7 +23,7 @@ jobs:
       - name: Run script to check GitHub minutes
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: node check_minutes.js
+        run: node check_minutes.mjs
 
       - name: Save minutes remaining to output
         id: minutes_output
