@@ -27,8 +27,8 @@ jobs:
 
       - name: Save minutes remaining to output
         id: minutes_output
-        run: echo "::set-output name=minutes_remaining::$(node check_minutes.js)"
-
+        run: echo "::set-output name=minutes_remaining::$(node check_minutes.mjs)"
+       
   build_on_github_actions:
     runs-on: ubuntu-latest
     needs: check_minutes
