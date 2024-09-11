@@ -1,0 +1,46 @@
+name: Build Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_minutes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run script to check GitHub minutes
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: node check_minutes.js
+
+      - name: Save minutes remaining to output
+        id: minutes_output
+        run: echo "::set-output name=minutes_remaining::$(node check_minutes.js)"
+
+  build_on_github_actions:
+    runs-on: ubuntu-latest
+    needs: check_minutes
+    if: needs.check_minutes.outputs.minutes_remaining > 0
+    steps:
+      - name: Build on GitHub Actions
+        run: echo "Building on GitHub Actions runner"
+
+  build_on_self_hosted:
+    runs-on: self-hosted
+    needs: check_minutes
+    if: needs.check_minutes.outputs.minutes_remaining == 0
+    steps:
+      - name: Build on self-hosted runner
+        run: echo "Building on self-hosted runner"
