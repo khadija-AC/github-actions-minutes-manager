@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 const org = 'khadija-AC';
 const token = process.env.GH_TOKEN;
